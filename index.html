@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="az">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tefekkur Liseyi</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    header {
+      background: #000;
+      padding: 30px 50px;
+      box-shadow: 0 2px 8px rgba(255, 165, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      position: relative;
+      z-index: 20;
+      width: 100%;
+    }
+
+    @keyframes fadeSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes glowPulse {
+      0%,
+      100% {
+        text-shadow: 0 0 10px #ffa500, 0 0 20px #ffa500, 0 0 30px #ff7f00;
+      }
+
+      50% {
+        text-shadow: 0 0 20px #ff8000, 0 0 40px #ff8000, 0 0 60px #ff4500;
+      }
+    }
+
+    header h1 {
+      font-weight: 600;
+      font-size: 3rem;
+      letter-spacing: 2px;
+      user-select: none;
+      animation: fadeSlideIn 1s ease forwards, glowPulse 2.5s ease-in-out infinite;
+      color: #ffa500;
+      margin-right: 20px;
+    }
+
+    main {
+      background-color: #111;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 30px #ff7f00;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #ffa500;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+      box-shadow: 0 0 8px #ff7f00 inset;
+      background-color: #222;
+      color: #fff;
+    }
+
+    input::placeholder {
+      color: #bbb;
+    }
+
+    button {
+      background-color: #ffa500;
+      border: none;
+      padding: 12px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      color: #000;
+      box-shadow: 0 0 20px #ffb84d;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ff7f00;
+    }
+
+    .switch-link {
+      font-size: 0.9rem;
+      color: #bbb;
+      cursor: pointer;
+      user-select: none;
+      margin-top: 8px;
+      display: block;
+    }
+
+    .switch-link:hover {
+      color: #ffa500;
+      text-decoration: underline;
+    }
+
+    .error {
+      color: #ff4d4d;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .success {
+      color: #4dff4d;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Tefekkur Liseyi</h1>
+  </header>
+  <main>
+    <!-- Login form -->
+    <section id="loginSection">
+      <h2>Xoş gəlmisiniz</h2>
+      <form id="loginForm" autocomplete="off">
+        <input type="text" id="loginUsername" placeholder="İstifadəçi adı" required minlength="6" maxlength="10" />
+        <input type="password" id="loginPassword" placeholder="Parol" required minlength="8" maxlength="8" />
+        <button type="submit">Daxil ol</button>
+      </form>
+      <span class="switch-link" id="toRegister">Hesabınız yoxdur?</span>
+      <div id="loginMessage"></div>
+    </section>
+
+    <!-- Register form -->
+    <section id="registerSection" style="display:none;">
+      <h2>Qeydiyyat</h2>
+      <form id="registerForm" autocomplete="off">
+        <input type="text" id="regUsername" placeholder="İstifadəçi adı" required minlength="6" maxlength="10" />
+        <input type="password" id="regPassword" placeholder="Parol (8 hərf)" required minlength="8" maxlength="8" />
+        <input type="password" id="regPasswordRepeat" placeholder="Parolun təkrarı" required minlength="8" maxlength="8" />
+        <button type="submit">Qeydiyyatdan keç</button>
+      </form>
+      <span class="switch-link" id="toLogin">Hesabınız var?</span>
+      <div id="registerMessage"></div>
+    </section>
+  </main>
+
+  <script>
+    // Elements
+    const loginSection = document.getElementById('loginSection');
+    const registerSection = document.getElementById('registerSection');
+    const toRegister = document.getElementById('toRegister');
+    const toLogin = document.getElementById('toLogin');
+
+    const loginForm = document.getElementById('loginForm');
+    const loginUsername = document.getElementById('loginUsername');
+    const loginPassword = document.getElementById('loginPassword');
+    const loginMessage = document.getElementById('loginMessage');
+
+    const registerForm = document.getElementById('registerForm');
+    const regUsername = document.getElementById('regUsername');
+    const regPassword = document.getElementById('regPassword');
+    const regPasswordRepeat = document.getElementById('regPasswordRepeat');
+    const registerMessage = document.getElementById('registerMessage');
+
+    // Show register form
+    toRegister.addEventListener('click', () => {
+      loginSection.style.display = 'none';
+      registerSection.style.display = 'block';
+      loginMessage.textContent = '';
+      registerMessage.textContent = '';
+      clearForms();
+    });
+
+    // Show login form
+    toLogin.addEventListener('click', () => {
+      registerSection.style.display = 'none';
+      loginSection.style.display = 'block';
+      loginMessage.textContent = '';
+      registerMessage.textContent = '';
+      clearForms();
+    });
+
+    // Clear all form inputs
+    function clearForms() {
+      loginForm.reset();
+      registerForm.reset();
+    }
+
+    // Validate username length (6-10) and password length (8)
+    function validateUsername(username) {
+      return username.length >= 6 && username.length <= 10;
+    }
+
+    function validatePassword(password) {
+      return password.length === 8;
+    }
+
+    // Save account to localStorage (username as key, password as value)
+    function saveAccount(username, password) {
+      localStorage.setItem('account_' + username, password);
+    }
+
+    // Get account password from localStorage by username
+    function getAccount(username) {
+      return localStorage.getItem('account_' + username);
+    }
+
+    // Registration form submit
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = regUsername.value.trim();
+      const password = regPassword.value;
+      const passwordRepeat = regPasswordRepeat.value;
+
+      registerMessage.textContent = '';
+      registerMessage.className = '';
+
+      // Validate inputs
+      if (!validateUsername(username)) {
+        registerMessage.textContent = 'İstifadəçi adı 6 ilə 10 hərf arası olmalıdır.';
+        registerMessage.className = 'error';
+        return;
+      }
+      if (!validatePassword(password)) {
+        registerMessage.textContent = 'Parol dəqiq 8 hərf olmalıdır.';
+        registerMessage.className = 'error';
+        return;
+      }
+      if (password !== passwordRepeat) {
+        registerMessage.textContent = 'Parol və təkrar parol eyni olmalıdır.';
+        registerMessage.className = 'error';
+        return;
+      }
+
+      // Check if username exists
+      if (getAccount(username) !== null) {
+        registerMessage.textContent = 'Bu istifadəçi adı artıq mövcuddur.';
+        registerMessage.className = 'error';
+        return;
+      }
+
+      // Save account
+      saveAccount(username, password);
+      registerMessage.textContent = 'Qeydiyyat uğurla tamamlandı. İndi daxil ola bilərsiniz.';
+      registerMessage.className = 'success';
+
+      // Clear form
+      registerForm.reset();
+
+      // Auto switch to login after 2 seconds
+      setTimeout(() => {
+        registerSection.style.display = 'none';
+        loginSection.style.display = 'block';
+        registerMessage.textContent = '';
+      }, 2000);
+    });
+
+    // Login form submit
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = loginUsername.value.trim();
+      const password = loginPassword.value;
+
+      loginMessage.textContent = '';
+      loginMessage.className = '';
+
+      // Validate inputs
+      if (!validateUsername(username)) {
+        loginMessage.textContent = 'İstifadəçi adı 6 ilə 10 hərf arası olmalıdır.';
+        loginMessage.className = 'error';
+        return;
+      }
+      if (!validatePassword(password)) {
+        loginMessage.textContent = 'Parol dəqiq 8 hərf olmalıdır.';
+        loginMessage.className = 'error';
+        return;
+      }
+
+      // Check account
+      const savedPass = getAccount(username);
+      if (savedPass === null || savedPass !== password) {
+        loginMessage.textContent = 'Belə hesab tapılmadı.';
+        loginMessage.className = 'error';
+        return;
+      }
+
+      // Success login
+      loginMessage.textContent = `Xoş gəldiniz, ${username}!`;
+      loginMessage.className = 'success';
+
+      // Here you can redirect or show logged in content
+      // For now just disable form
+      loginForm.querySelector('button').disabled = true;
+      loginUsername.disabled = true;
+      loginPassword.disabled = true;
+    });
+  </script>
+</body>
+
+</html>
